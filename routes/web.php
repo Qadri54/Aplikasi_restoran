@@ -20,3 +20,5 @@ Route::get('/register', function () {
 Route::get('/chekout', function () {
     return view('chekout');
 });
+
+Route::get('/test', [OrderController::class,'index']);
