@@ -55,7 +55,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div
                 class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                    <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
+                <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
                 <div class="px-5 pb-5">
                     <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Mie Bangladesh</h5>
                     <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-3">jumlah: 10</h5>
@@ -64,13 +64,14 @@
                     <div class="flex items-center justify-between">
                         <span class="text-xl font-bold text-gray-900 dark:text-white">total harga: 12,000</span>
                         <p class="text-white text-center">status :
-                            <span class="text-yellow-500">pending</span>
+                            <span class="text-yellow-600">pending</span>
                         </p>
                     </div>
                     <div class="flex items-center justify-between mt-5 -ml-1">
-                            <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel order</button>
-                        </div>
+                        <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                            class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
+                            order</button>
+                    </div>
                 </div>
             </div>
         </div>
