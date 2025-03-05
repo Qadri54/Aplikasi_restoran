@@ -12,19 +12,31 @@ class OrderController extends Controller {
         $orders = Order::with(['table', 'products'])
             ->where('table_id', 1)
             ->get();
-        $rupiahFormaterr = new NumberFormatter('id_ID',NumberFormatter::CURRENCY);
-        $totalPricing = 0;
+        $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
 
-        foreach ($orders as $order) {
-            echo "Order ID: {$order->id} - Nomor Meja: {$order->table->no_meja}<br>";
-            foreach ($order->products as $product) {
-                $subTotal = $product->harga * $product->pivot->quanity;
-                $totalPricing += $subTotal;
-                echo "Produk: {$product->nama_produk}, Quantity: {$product->pivot->quanity}, harga qty: {$rupiahFormaterr->formatCurrency($product->harga,'IDR')}<br>";
-            }
-            echo "<hr>";
-        }
+        return view('chekout', [
+            "orders" => $orders,
+            "rupiahFormater" => $rupiahFormaterr,
+        ]);
+    }
 
-        echo "Total harga: " . $rupiahFormaterr->formatCurrency($totalPricing,'IDR');
+    public function store(Request $request) {
+        // Validasi input
+        $validated = $request->validate([
+            'id_product' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+
+        // 1. Buat order baru dan simpan di variable
+        $order = Order::create([
+            'table_id' => $request->table_id,  // kalau ada table_id
+            'status' => 'pending'
+        ]);
+
+        $order->products()->attach($validated['id_product'], [
+            'quanity' => $validated['quantity']
+        ]);
+        return redirect()->back()->with('success', 'Order berhasil ditambahkan!');
     }
 }

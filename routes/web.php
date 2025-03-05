@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 Route::get('admin', [ProductController::class,'get_all_admin']);
 
 Route::get('/', [ProductController::class,'get_all']);
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
+
 
 Route::get('/login', function () {
     return view('login');
