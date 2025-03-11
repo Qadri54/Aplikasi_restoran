@@ -7,22 +7,30 @@ use App\Models\Product;
 use App\Models\Table;
 use NumberFormatter;
 use App\Models\Order;
+use function Laravel\Prompts\table;
 
 class OrderController extends Controller {
-    public function index() {
-        $orders = Order::with(['table', 'products'])
-            ->where('table_id', 1)
-            ->get();
-        $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
-
-        return view('chekout', [
-            "orders" => $orders,
-            "rupiahFormater" => $rupiahFormaterr,
-        ]);
-    }
-
     public function meja(Table $table){
-        return Table::find($table);
+        $data_order = Order::with(['table', 'products'])->where('table_id',$table->id)->get();
+        $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
+        $data_status = [];
+        foreach($data_order as $value){
+            foreach($value->products as $product){
+                $data_status[] = [
+                    "nomor_meja" =>$value->table->no_meja,
+                    "nama_pesanan" =>$product->nama_produk,
+                    "jumlah" =>$product->pivot->quanity,
+                    "harga" =>$rupiahFormaterr->formatCurrency($product->harga,'IDR'),
+                    "total_harga" =>$rupiahFormaterr->formatCurrency($product->harga * $product->pivot->quanity,'IDR'),
+                    "status" =>$value->status
+                ];
+            }
+        }
+        return view('chekout', [
+            "orders" => $data_status,
+            "rupiahFormater" => $rupiahFormaterr,
+            "no_meja" => $table->no_meja
+        ]);
     }
 
     public function store(Request $request) {

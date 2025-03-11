@@ -1,5 +1,5 @@
 <x-layout>
-    <x-modal></x-modal>
+    <x-modal>{{ $no_meja }}</x-modal>
         <nav
             class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
             <div class="flex flex-wrap justify-between items-center">
@@ -65,7 +65,7 @@
                 </form>
                 <ul class="space-y-2">
                     <li>
-                        <a href="/test"
+                        <a href="/checkout/{{ $no_meja }}"
                             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                             <svg aria-hidden="true"
                                 class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"

@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 
 Route::get('admin', [ProductController::class,'get_all_admin']);
 
-Route::get('/', [ProductController::class,'get_all']);
+Route::get('/meja/{table:no_meja}', [ProductController::class,'get_all']);
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
 
@@ -23,6 +23,4 @@ Route::get('/chekout', function () {
     return view('chekout');
 });
 
-Route::get('/test', [OrderController::class,'index']);
-
-Route::get('/test/{meja:no_meja}', [OrderController::class,'index']);
+Route::get('/checkout/{table:no_meja}', [OrderController::class,'meja']);

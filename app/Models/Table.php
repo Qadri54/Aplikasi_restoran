@@ -13,6 +13,6 @@ class Table extends Model
     ];
 
     public function order():HasMany{
-        return $this->hasMany(Product::class,'order_id');
+        return $this->hasMany(Order::class,'id');
     }
 }

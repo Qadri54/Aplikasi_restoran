@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Table;
 use NumberFormatter;
 class ProductController extends Controller
 {
-    public function get_all() {
+    public function get_all(Table $table) {
         $items = Product::all();
         $rupiahFormaterr = new NumberFormatter('id_ID',NumberFormatter::CURRENCY);
         $getpriceList = [];
@@ -18,7 +19,8 @@ class ProductController extends Controller
         }
         return view('order',[
             'data'=> $items,
-            'price' => $getpriceList
+            'price' => $getpriceList,
+            'no_meja' => $table->no_meja
         ]);
     }
 
