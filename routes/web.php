@@ -24,3 +24,5 @@ Route::get('/chekout', function () {
 });
 
 Route::get('/test', [OrderController::class,'index']);
+
+Route::get('/test/{meja:no_meja}', [OrderController::class,'index']);

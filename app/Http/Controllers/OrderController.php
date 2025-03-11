@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Table;
 use NumberFormatter;
 use App\Models\Order;
 
@@ -18,6 +19,10 @@ class OrderController extends Controller {
             "orders" => $orders,
             "rupiahFormater" => $rupiahFormaterr,
         ]);
+    }
+
+    public function meja(Table $table){
+        return Table::find($table);
     }
 
     public function store(Request $request) {
