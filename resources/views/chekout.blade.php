@@ -33,14 +33,7 @@
                 <li>
                     <a href="/meja/{{ $no_meja }}"
                         class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                        <svg aria-hidden="true"
-                            class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                            <path fill-rule="evenodd"
-                                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                                clip-rule="evenodd"></path>
-                        </svg>
+                        <img class="h-[25px] w-[25px]" src="{{ asset('img/home.png') }}" alt="home">
                         <span class="ml-3">back to home</span>
                     </a>
                 </li>
@@ -53,24 +46,31 @@
     <main class="p-4 md:ml-64 h-auto lg:pt-10 pt-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             @foreach ($orders as $order)
-            <?php $no_meja = $order["nomor_meja"] ?>
+                <?php    $no_meja = $order["nomor_meja"] ?>
                 <div
                     class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
                     <div class="px-5 pb-5">
-                        <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-3">No Meja :
-                            {{ $order["nomor_meja"] }}</h5>
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-3">Nama pesanan :
-                                {{ $order["nama_pesanan"] }}</h5>
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-3">jumlah pesanan : {{ $order["jumlah"] }}</h5>
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-3">harga_satuan : {{ $order["harga"] }}</h5>
-                            <div class="flex items-center mt-2.5 mb-5">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-l font-bold text-gray-900 dark:text-white">total harga: {{ $order["total_harga"]    }}</span>
-                                <p class="text-white text-center">status :
-                                    <span class="text-yellow-600">{{ $order["status"] }}</span>
-                                </p>
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">No Meja :
+                            {{ $order["nomor_meja"] }}
+                        </h5>
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">Nama pesanan :
+                            {{ $order["nama_pesanan"] }}
+                        </h5>
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">jumlah pesanan :
+                            {{ $order["jumlah"] }}
+                        </h5>
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">harga_satuan :
+                            {{ $order["harga"] }}
+                        </h5>
+                        <div class="flex items-center mt-2.5 mb-5">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-l font-bold text-gray-800 dark:text-white">total harga:
+                                {{ $order["total_harga"]    }}</span>
+                            <p class="dark:text-white text-slate-800 text-center">status :
+                                <span class="text-yellow-600">{{ $order["status"] }}</span>
+                            </p>
                         </div>
                         <div class="flex items-center justify-between mt-5 -ml-1">
                             <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"

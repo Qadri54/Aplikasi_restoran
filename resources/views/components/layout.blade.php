@@ -9,5 +9,5 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="bg-[#1B1B3A]">
+    <body class="dark:bg-[#1B1B3A]">
         {{$slot}}

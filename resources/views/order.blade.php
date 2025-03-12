@@ -75,7 +75,7 @@
                                     d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            <span class="ml-3">chekout</span>
+                            <span class="ml-3">your order</span>
                         </a>
                     </li>
                 </ul>
@@ -87,7 +87,7 @@
                 @foreach ($data as $key => $item)
                     <div
                         class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                        <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="{{ $item["nama_produk"] }}" />
+                        <img class="p-8 rounded-t-lg" src="" alt="{{ $item["nama_produk"] }}" />
                         <div class="px-5 pb-5">
                                 <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                     {{ $item["nama_produk"] }}
