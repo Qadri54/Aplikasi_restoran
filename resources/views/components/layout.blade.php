@@ -11,3 +11,6 @@
 
     <body class="dark:bg-[#1B1B3A]">
         {{$slot}}
+    </body>
+
+</html>

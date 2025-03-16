@@ -7,11 +7,11 @@ use App\Models\Product;
 use App\Models\Table;
 use NumberFormatter;
 use App\Models\Order;
-use function Laravel\Prompts\table;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller {
     public function meja(Table $table){
-        $data_order = Order::with(['table', 'products'])->where('table_id',$table->id)->get();
+        $data_order = Order::with(['products','table'])->where('table_id',$table->id)->get();
         $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
         $data_status = [];
         foreach($data_order as $value){
@@ -34,12 +34,17 @@ class OrderController extends Controller {
     }
 
     public function store(Request $request) {
-        // Validasi input
-        $validated = $request->validate([
-            'id_product' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
 
+        $validator = Validator::make($request->all(),[
+            'id_product' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1'
+        ]);
+        
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validate();
 
         // 1. Buat order baru dan simpan di variable
         $order = Order::create([

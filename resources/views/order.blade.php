@@ -1,5 +1,6 @@
 <x-layout>
-    <x-modal>{{ $no_meja }}</x-modal>
+    <!-- mengambil data nomor meja dan mengirim data ke component modal saat pertama kali mengakses /order/nomor meja -->
+    <x-modal>{{ $no_meja }}</x-modal> 
         <nav
             class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
             <div class="flex flex-wrap justify-between items-center">
@@ -82,7 +83,7 @@
             </div>
         </aside>
 
-        <main class="p-4 md:ml-64 h-auto pt-20">
+        <main class="p-4 md:ml-64 ml-10 h-auto pt-20">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 @foreach ($data as $key => $item)
                     <div
@@ -96,7 +97,7 @@
                         <div class="flex items-center justify-between p-5">
                         <span class="text-xl font-bold text-gray-900 dark:text-white">{{ $price[$key] }}</span>
                             <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                data-id="{{ $item["nama_produk"] }}"
+                                data-nama_produk="{{ $item["nama_produk"] }}"
                                 data-id_produk="{{ $item["id"] }}"
                                 class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Chekout</button>
                         </div>

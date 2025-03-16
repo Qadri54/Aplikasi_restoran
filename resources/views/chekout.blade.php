@@ -44,7 +44,7 @@
 
     <!-- Main -->
     <main class="p-4 md:ml-64 h-auto lg:pt-10 pt-20">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ml-10 mb-4">
             @foreach ($orders as $order)
                 <?php    $no_meja = $order["nomor_meja"] ?>
                 <div
