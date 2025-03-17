@@ -73,9 +73,23 @@
                             </p>
                         </div>
                         <div class="flex items-center justify-between mt-5 -ml-1">
-                            <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
-                                order</button>
+                            <form action="{{ route('delete') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $order['id'] }}">
+                                <input type="hidden" name="status" value="{{ $order['status'] }}">
+                                <!-- mengecek status order jika tidak pending maka button menjadi disabled -->
+                                @if ($order['status'] != 'pending')
+                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
+                                        data-modal-toggle="crud-modal" disabled
+                                        class="button_order w-auto text-white bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-500 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
+                                        order</button>
+                                @else
+                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
+                                        data-modal-toggle="crud-modal"
+                                        class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
+                                        order</button>
+                                @endif
+                            </form>
                         </div>
                     </div>
                 </div>

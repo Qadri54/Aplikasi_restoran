@@ -22,7 +22,8 @@ class OrderController extends Controller {
                     "jumlah" =>$product->pivot->quanity,
                     "harga" =>$rupiahFormaterr->formatCurrency($product->harga,'IDR'),
                     "total_harga" =>$rupiahFormaterr->formatCurrency($product->harga * $product->pivot->quanity,'IDR'),
-                    "status" =>$value->status
+                    "status" =>$value->status,
+                    "id" =>$value->id
                 ];
             }
         }
@@ -31,6 +32,14 @@ class OrderController extends Controller {
             "rupiahFormater" => $rupiahFormaterr,
             "no_meja" => $table->no_meja
         ]);
+    }
+
+    public function cancelOrder(Request $request){
+        if($request['status'] === 'pending'){
+            Order::destroy($request['id']);
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 
     public function store(Request $request) {

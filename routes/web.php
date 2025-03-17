@@ -23,3 +23,4 @@ Route::post('/logout',[AuthController::class,'logout'])->name('auth.logout');
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 Route::get('/meja/{table:no_meja}', [ProductController::class, 'get_all']);
 Route::get('/checkout/{table:no_meja}', [OrderController::class, 'meja']);
+Route::post('/delete_order', [OrderController::class, 'cancelOrder'])->name('delete');
