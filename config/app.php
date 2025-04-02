@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    /* 
+    server key config
+    */
+
+    'server_key' => [
+        'sanbox'=> env('SERVER_KEY','default_server_key')
+    ]
 ];

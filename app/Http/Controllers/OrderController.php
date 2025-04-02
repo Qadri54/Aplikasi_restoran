@@ -8,14 +8,18 @@ use App\Models\Table;
 use NumberFormatter;
 use App\Models\Order;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller {
     public function meja(Table $table){
         $data_order = Order::with(['products','table'])->where('table_id',$table->id)->get();
         $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
+        $total_amount = 0;
         $data_status = [];
+        $transaction_id = Str::uuid();
         foreach($data_order as $value){
             foreach($value->products as $product){
+                $total_amount += $product->harga * $product->pivot->quanity;
                 $data_status[] = [
                     "nomor_meja" =>$value->table->no_meja,
                     "nama_pesanan" =>$product->nama_produk,
@@ -30,7 +34,9 @@ class OrderController extends Controller {
         return view('chekout', [
             "orders" => $data_status,
             "rupiahFormater" => $rupiahFormaterr,
-            "no_meja" => $table->no_meja
+            "no_meja" => $table->no_meja,
+            "total_amount" => $total_amount,
+            "transaction_id" => $transaction_id
         ]);
     }
 
