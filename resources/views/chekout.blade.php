@@ -1,6 +1,6 @@
 <x-layout>
     <!-- Navbar -->
-     <?php $total_bayar = 0 ?>
+    <?php $total_bayar = 0 ?>
     <nav>
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
@@ -49,7 +49,7 @@
             @foreach ($orders as $order)
                 <div
                     class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                    <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
+                    <img class="p-8 rounded-t-lg object-cover w-full h-[300px]" src="{{ asset('img/' . $order['nama_pesanan'] . '.jpg') }}" alt={{ $order['nama_pesanan'] }} />
                     <div class="px-5 pb-5">
                         <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">No Meja :
                             {{ $order["nomor_meja"] }}
@@ -99,7 +99,8 @@
                 </div>
                 @endforeach
         </div>
-        <form action="{{ route('test') }}" method="post" class="w-full flex justify-center">
+        
+        <form action="{{ route('payment') }}" method="post" class="w-full flex justify-center mt-10">
             @csrf
             <input type="hidden" value="{{  $transaction_id }}" name="id">
             <input type="hidden" value="{{ $total_amount }}" name="amount">
