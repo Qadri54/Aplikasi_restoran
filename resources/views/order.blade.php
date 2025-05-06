@@ -81,14 +81,14 @@
                             <path
                                 d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                         </svg>
-                        <span class="ml-1">your order</span>
+                        <span class="ml-1">keranjang anda</span>
                     </a>
                 </li>
             </ul>
         </div>
     </aside>
 
-    <main class="p-4 md:ml-64 ml-10 h-auto pt-20">
+    <main class="p-4 md:ml-64 mx-auto h-auto pt-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             @foreach ($data as $key => $item)
                 <div
@@ -104,8 +104,8 @@
                         <span class="text-xl font-bold text-gray-900 dark:text-white">{{ $price[$key] }}</span>
                         <button id="button_order" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                             data-nama_produk="{{ $item["nama_produk"] }}" data-id_produk="{{ $item["id"] }}"
-                            class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">add
-                            to cart</button>
+                            class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-1 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            masuk ke keranjang</button>
                     </div>
 
                 </div>

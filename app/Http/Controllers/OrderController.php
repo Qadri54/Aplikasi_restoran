@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller {
-    public function meja(Table $table){
+    public function meja(Table $table) { //mengirim data yang sudah dipesan dan di kirim ke halaman chekout
         $data_order = Order::with(['products','table'])->where('table_id',$table->id)->get();
         $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
         $total_amount = 0;
@@ -19,11 +19,14 @@ class OrderController extends Controller {
         $transaction_id = Str::uuid();
         foreach($data_order as $value){
             foreach($value->products as $product){
-                $total_amount += $product->harga * $product->pivot->quanity;
+                if($value->status === 'pending'){
+                    $total_amount += $product->harga * $product->pivot->quanity;
+                }
                 $data_status[] = [
                     "nomor_meja" =>$value->table->no_meja,
                     "nama_pesanan" =>$product->nama_produk,
                     "jumlah" =>$product->pivot->quanity,
+                    "category" => $product->category->nama_category,
                     "harga" =>$rupiahFormaterr->formatCurrency($product->harga,'IDR'),
                     "total_harga" =>$rupiahFormaterr->formatCurrency($product->harga * $product->pivot->quanity,'IDR'),
                     "status" =>$value->status,

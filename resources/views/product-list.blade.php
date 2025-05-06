@@ -1,264 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
     <head>
         <meta charset="UTF-8">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+        <title>Admin Dashboard</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     </head>
 
-    <body>
-        <x-modalInput></x-modalInput>
-        <x-dashboard-admin></x-dashboard-admin>
-        <div class="h-[90vh] flex">
-            <div class="mx-auto min-w-full xl:min-w-[80rem] my-auto px-4 lg:px-12">
-                <!-- Start coding here -->
-                <div
-                    class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg min-h-[10rem] overflow-hidden">
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                        <div class="w-full md:w-1/2">
-                            <form class="flex items-center">
-                                <label for="simple-search" class="sr-only">Search</label>
-                                <div class="relative w-full">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                            fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <input type="text" id="simple-search"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Search" required="">
-                                </div>
-                            </form>
-                        </div>
-                        <div
-                            class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                            <button type="button" data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path clip-rule="evenodd" fill-rule="evenodd"
-                                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                </svg>
-                                Add product
-                            </button>
-                            <div class="flex items-center space-x-3 w-full md:w-auto">
-                                <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown"
-                                    class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                    type="button">
-                                    <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path clip-rule="evenodd" fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                                    </svg>
-                                    Actions
-                                </button>
-                                <div id="actionsDropdown"
-                                    class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                    <div class="py-1">
-                                        <a href="#"
-                                            class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
-                                            all</a>
-                                    </div>
-                                </div>
-                                <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown"
-                                    class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                    type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                                        class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Filter
-                                    <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path clip-rule="evenodd" fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                                    </svg>
-                                </button>
-                                <div id="filterDropdown"
-                                    class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose category
-                                    </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Mie
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nasi
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Kopi
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Teh
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Juice
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Chocolate
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="apple" type="checkbox" value=""
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="apple"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Jelly
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 min-h-[7rem]">
-                            <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3">Product name</th>
-                                    <th scope="col" class="px-4 py-3">Category</th>
-                                    <th scope="col" class="px-4 py-3">stok</th>
-                                    <th scope="col" class="px-4 py-3">Harga</th>
-                                    <th scope="col" class="px-4 py-3">
-                                        <span class="sr-only">Actions</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $key => $item)
-                                    <tr class="border-b dark:border-gray-700">
-                                        <th scope="row"
-                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$item['nama_produk']}}
-                                        </th>
-                                        <td class="px-4 py-3">Makanan</td>
-                                        <td class="px-4 py-3">{{$item['stok']}} pcs</td>
-                                        <td class="px-4 py-3">{{$price[$key]}}</td>
-                                        <td class="px-4 py-3 flex items-center justify-end">
-                                            <button id="apple-imac-27-dropdown-button"
-                                                data-dropdown-toggle="apple-imac-27-dropdown"
-                                                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                                type="button">
-                                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                                    viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                </svg>
-                                            </button>
-                                            <div id="apple-imac-27-dropdown"
-                                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                                    aria-labelledby="apple-imac-27-dropdown-button">
-                                                    <li>
-                                                        <a href="#"
-                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"
-                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="py-1">
-                                                    <a href="#"
-                                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                        aria-label="Table navigation">
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            Showing
-                            <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                            of
-                            <span class="font-semibold text-gray-900 dark:text-white">1000</span>
-                        </span>
-                        <ul class="inline-flex items-stretch -space-x-px">
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    <span class="sr-only">Previous</span>
-                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                            </li>
-                            <li>
-                                <a href="#" aria-current="page"
-                                    class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    <span class="sr-only">Next</span>
-                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+    <body class="bg-white text-gray-800 dark:bg-[#13122c] dark:text-white">
+        <div class="flex justify-between items-center px-6 py-4 shadow-md dark:shadow-none">
+            <div class="text-xl font-bold">List Produk</div>
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('auth.logout') }}" class="text-sm px-3 py-1 bg-red-500 text-white rounded">Logout</a>
             </div>
         </div>
+
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Product List</h2>
+                <button onclick="openModal()" class="px-4 py-2 bg-blue-600 text-white rounded">+ Add Product</button>
+            </div>
+            <div class="overflow-auto rounded-lg shadow">
+                <table class="min-w-full text-sm text-left">
+                    <thead class="bg-gray-200 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2">Product</th>
+                            <th class="px-4 py-2">Category</th>
+                            <th class="px-4 py-2">Stock</th>
+                            <th class="px-4 py-2">Price</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product_list" class="divide-y divide-gray-200 dark:divide-gray-600">
+                        <!-- Produk akan dimuat di sini melalui AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="productModal"
+            class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-[#1e1e2f] p-6 rounded w-96">
+                <h3 class="text-lg font-semibold mb-4">Add Product</h3>
+                <form action="" method="">
+                    <div class="mb-4">
+                        <label for="product_name" class="block text-gray-700">Product Name</label>
+                        <input type="text" placeholder="Product Name" id="product_name"
+                            class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="category_id" class="block text-gray-700">Category ID</label>
+                        <input type="text" placeholder="Category id" id="category_id"
+                            class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="stock" class="block text-gray-700">Stock</label>
+                        <input type="number" placeholder="Stock" id="stock"
+                            class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="price" class="block text-gray-700">Price</label>
+                        <input type="text" placeholder="Price" id="price"
+                            class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
+                    </div>
+
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="closeModal()"
+                            class="px-4 py-2 bg-gray-400 rounded">Cancel</button>
+                        <button type="submit" id="add" class="px-4 py-2 bg-blue-600 text-white rounded">Add</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <script>
+            // const toggleThemeBtn = document.getElementById('toggleTheme');
+            // toggleThemeBtn.addEventListener('click', () => {
+            //     document.documentElement.classList.toggle('dark');
+            // });
+
+            //modal untuk add produk
+            function openModal() {
+                $('#productModal').removeClass("hidden").val('');
+                $('h3').text('add product');
+                $('#add').text('add');
+                $('#add').click(function () {
+                    $.ajax({
+                        url: "/add",
+                        method: "POST",
+                        data: {
+                            nama_produk: $("#product_name").val(),
+                            category: $("#category_id").val(),
+                            stok: $("#stock").val(),
+                            harga: $("#price").val(),
+                        },
+                        success: function (response) {
+                            console.log(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            }
+
+
+            function closeModal() {
+                document.getElementById('productModal').classList.add('hidden');
+            }
+
+            //fungsi untuk merubah angka ke rupiah
+            function formatRupiah(number) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(number);
+            }
+
+
+            //fungsi untuk edit produk
+            function edit_openModal(item) {
+                $('h3').text('edit product');
+                $('#add').text('edit');
+                $("#productModal").removeClass("hidden");
+                $("#product_name").val(item.nama_produk);
+                $("#category_id").val(item.category);
+                $("#stock").val(item.stok);
+                $("#price").val(item.harga);
+
+                $('#add').click(function () {
+                    $.ajax({
+                        url: "/edit/" + item.nama_produk,
+                        method: "POST",
+                        data: {
+                            nama_produk: $("#product_name").val(),
+                            category: $("#category_id").val(),
+                            stok: $("#stock").val(),
+                            harga: $("#price").val(),
+                        },
+                        success: function (response) {
+                            console.log(response);
+                        },
+                        error: function (xhr) {
+                            console.error("❌ Gagal mengirim data ke server.");
+                            console.error("Status:", xhr.status);
+                            console.error("Response:", xhr.responseText);
+                        }
+                    });
+                })
+            }
+
+            $(document).ready(function () {
+
+                //menyiapkan csrf token untuk post method menggunakan jquery
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+
+                //mengambil semua produk dan menaruh di dalam tabel
+                function fetchProducts() {
+                    $.ajax({
+                        url: "/allproduct",
+                        method: "GET",
+                        dataType: "json",
+                        success: function (response) {
+                            const { data, categoryName } = response;
+
+                            $("#product_list").html(
+                                data.map((item, index) => `
+                                <tr>
+                                    <td class="px-4 py-2">${item.nama_produk}</td>
+                                    <td class="px-4 py-2">${item.category.nama_category}</td>
+                                    <td class="px-4 py-2">${item.stok}</td>
+                                    <td class="px-4 py-2">${formatRupiah(item.harga)}</td>
+                                    <td class="px-4 py-2">
+                                        <button onclick="edit_openModal({nama_produk: '${item.nama_produk}', category: '${item.category.id}', stok: '${item.stok}', harga: '${item.harga}'})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                            Edit
+                                        </button>
+                                        <a href="/delete/${item.id}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"> 
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            `));
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Gagal mengambil data produk:", error);
+                        }
+                    });
+                }
+
+                // Fetch pertama kali
+                fetchProducts();
+
+                // Refresh setiap 3 detik
+                setInterval(fetchProducts, 3000);
+            });
+        </script>
     </body>
 
 </html>

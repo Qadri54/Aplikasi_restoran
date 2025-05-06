@@ -1,6 +1,14 @@
 <x-layout>
     <!-- Navbar -->
-    <?php $total_bayar = 0 ?>
+    @php
+        $total_bayar = 0;
+        $status_order = "";
+        $number_of_orders = [];
+        $nomor_meja = 0;
+        $product_names = [];
+        $transaction_status = null;
+    @endphp
+
     <nav>
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
@@ -45,74 +53,105 @@
 
     <!-- Main -->
     <main class="p-4 md:ml-64 h-auto lg:pt-10 pt-20">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ml-10 mb-4">
+        <h1 class="text-3xl font-bold leading-tight text-center mb-10 tracking-tight text-gray-900 md:text-4xl dark:text-white">Pesanan Meja {{ $no_meja }}</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto mb-4">
             @foreach ($orders as $order)
-                <div
-                    class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                    <img class="p-8 rounded-t-lg object-cover w-full h-[300px]" src="{{ asset('img/' . $order['nama_pesanan'] . '.jpg') }}" alt={{ $order['nama_pesanan'] }} />
-                    <div class="px-5 pb-5">
-                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">No Meja :
-                            {{ $order["nomor_meja"] }}
-                        </h5>
-                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">Nama pesanan :
-                            {{ $order["nama_pesanan"] }}
-                        </h5>
-                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">jumlah pesanan :
-                            {{ $order["jumlah"] }}
-                        </h5>
-                        <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">harga_satuan :
-                            {{ $order["harga"] }}
-                            @php
-                             $harga = (int)$order["harga"];
-                             $total_bayar += $harga;
-                            @endphp
-                        </h5>
-                        <div class="flex items-center mt-2.5 mb-5">
+                        @php
+                            $product_names[] = $order["nama_pesanan"];
+                            $number_of_orders[] = $order["jumlah"];
+                            $nomor_meja = $order["nomor_meja"];
+                            $status_order = $order["status"]
+                        @endphp
+                        <div
+                            class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                            <img class="p-8 rounded-t-lg object-cover w-full h-[300px]"
+                                src="{{ asset('img/' . $order['nama_pesanan'] . '.jpg') }}" alt={{ $order['nama_pesanan'] }} />
+                            <div class="px-5 pb-5">
+                                <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">
+                                    {{ $order["nama_pesanan"] }}
+                                </h5>
+                                <h5 class="text-xl font-semibold tracking-tight text-gray-800 dark:text-white mt-3">Qty :
+                                    {{ $order["jumlah"] }}
+                                </h5>
+                                <div class="flex items-center mt-2.5">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-l font-bold text-gray-800 dark:text-white">total bayar:
+                                        {{$order["total_harga"]}}</span>
+                                    <p class="dark:text-white text-slate-800 text-center">status :
+                                        <span class="text-yellow-600">{{ $order["status"] }}</span>
+                                    </p>
+                                </div>
+                                <div class="flex items-center justify-between mt-5 -ml-1">
+                                    <form action="{{ route('delete_order') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $order['id'] }}">
+                                        <input type="hidden" name="status" value="{{ $order['status'] }}">
+                                        <!-- mengecek status order jika tidak pending maka button menjadi disabled -->
+                                        @if ($order['status'] != 'pending')
+                                            <button type="submit" id="button_order" data-modal-target="crud-modal"
+                                                data-modal-toggle="crud-modal" disabled
+                                                class="button_order w-auto text-white bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-500 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
+                                                order</button>
+                                        @else
+                                            <button type="submit" id="button_order" data-modal-target="crud-modal"
+                                                data-modal-toggle="crud-modal"
+                                                class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
+                                                order</button>
+                                        @endif
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-l font-bold text-gray-800 dark:text-white">total harga:
-                                {{ $order["total_harga"]    }}</span>
-                            <p class="dark:text-white text-slate-800 text-center">status :
-                                <span class="text-yellow-600">{{ $order["status"] }}</span>
-                            </p>
-                        </div>
-                        <div class="flex items-center justify-between mt-5 -ml-1">
-                            <form action="{{ route('delete') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $order['id'] }}">
-                                <input type="hidden" name="status" value="{{ $order['status'] }}">
-                                <!-- mengecek status order jika tidak pending maka button menjadi disabled -->
-                                @if ($order['status'] != 'pending')
-                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
-                                        data-modal-toggle="crud-modal" disabled
-                                        class="button_order w-auto text-white bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-500 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
-                                        order</button>
-                                @else
-                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
-                                        data-modal-toggle="crud-modal"
-                                        class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
-                                        order</button>
-                                @endif
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+            @endforeach
         </div>
-        
-        <form action="{{ route('payment') }}" method="post" class="w-full flex justify-center mt-10">
-            @csrf
-            <input type="hidden" value="{{  $transaction_id }}" name="id">
-            <input type="hidden" value="{{ $total_amount }}" name="amount">
-            <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                    viewBox="0 0 18 21">
-                    <path
-                        d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-                </svg>
-                chekout sekarang
-            </button>
-        </form>
+
+        @if (isset($order) && $status_order === "pending")
+            <form action="{{ route('payment') }}" method="post" class="w-full flex justify-center mt-10">
+                @csrf
+                <input type="hidden" value="{{  $transaction_id }}" name="order_midtrans_id">
+                <input type="hidden" value="{{ $order['nomor_meja'] }}" name="id">
+                <input type="hidden" value="{{ $total_amount }}" name="amount">
+                <button type="submit"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 18 21">
+                        <path
+                            d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                    </svg>
+                    chekout sekarang
+                </button>
+            </form>
+        @elseif(!isset($order))
+            <h1 class="text-center text-5xl text-white font-bold">Kamu Belum Memesan</h1>
+        @endif
+
+
+        @if (!empty($_GET["transaction_status"]))
+            <script>
+                console.log("berhasil mengambil status transaksi")
+                $.ajax({
+                    url: "{{ route('payment.cekstatus') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        product_names: @js($product_names),
+                        number_of_orders: @js($number_of_orders),
+                        table_id: @js($nomor_meja),
+                        status_transaction: "{{ $_GET["transaction_status"] }}"
+                    },
+                    success: function (response) {
+                        console.log("✅ Data berhasil dikirim ke server:");
+                        console.log(response);
+                    },
+                    error: function (xhr) {
+                        console.error("❌ Gagal mengirim data ke server.");
+                        console.error("Status:", xhr.status);
+                        console.error("Response:", xhr.responseText);
+                    }
+                });
+                history.replaceState(null, "", window.location.pathname);
+            </script>
+        @endif
     </main>
 </x-layout>
