@@ -31,7 +31,8 @@
                             <th class="px-4 py-2">Category</th>
                             <th class="px-4 py-2">Stock</th>
                             <th class="px-4 py-2">Price</th>
-                            <th class="px-4 py-2">Actions</th>
+                            <th class="px-4 py-2">Image</th>
+                            <th class="px-4 py-2 ml-10">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="product_list" class="divide-y divide-gray-200 dark:divide-gray-600">
@@ -46,31 +47,45 @@
             class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-[#1e1e2f] p-6 rounded w-96">
                 <h3 class="text-lg font-semibold mb-4">Add Product</h3>
-                <form action="" method="">
+                <form action="" method="POST" enctype="multipart/form-data" id="productForm">
+                    @csrf
+
+                    <!-- Nama Produk -->
                     <div class="mb-4">
                         <label for="product_name" class="block text-gray-700">Product Name</label>
-                        <input type="text" placeholder="Product Name" id="product_name"
+                        <input type="text" placeholder="Product" name="nama_produk" id="product_name"
                             class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
                     </div>
 
+                    <!-- Kategori -->
                     <div class="mb-4">
                         <label for="category_id" class="block text-gray-700">Category ID</label>
-                        <input type="text" placeholder="Category id" id="category_id"
+                        <input type="text" placeholder="Category" name="category" id="category_id"
                             class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
                     </div>
 
+                    <!-- Stok -->
                     <div class="mb-4">
                         <label for="stock" class="block text-gray-700">Stock</label>
-                        <input type="number" placeholder="Stock" id="stock"
+                        <input type="number" placeholder="Stock" name="stok" id="stock"
                             class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
                     </div>
 
+                    <!-- Harga -->
                     <div class="mb-4">
                         <label for="price" class="block text-gray-700">Price</label>
-                        <input type="text" placeholder="Price" id="price"
+                        <input type="text" placeholder="Price" name="harga" id="price"
                             class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
                     </div>
 
+                    <!-- Gambar -->
+                    <div class="mb-4">
+                        <label for="image" class="block text-gray-700">Image</label>
+                        <input type="file" id="image" name="image" accept="image/*"
+                            class="w-full mb-2 px-3 py-2 border rounded dark:bg-gray-800">
+                    </div>
+
+                    <!-- Tombol -->
                     <div class="flex justify-end space-x-2">
                         <button type="button" onclick="closeModal()"
                             class="px-4 py-2 bg-gray-400 rounded">Cancel</button>
@@ -78,9 +93,9 @@
                     </div>
                 </form>
 
+
             </div>
         </div>
-
         <script>
             // const toggleThemeBtn = document.getElementById('toggleTheme');
             // toggleThemeBtn.addEventListener('click', () => {
@@ -89,27 +104,36 @@
 
             //modal untuk add produk
             function openModal() {
-                $('#productModal').removeClass("hidden").val('');
+
+                $('#productForm').attr('action', '/add');
+
+                $('#productModal').removeClass("hidden");
+                $("#product_name").val('');
+                $("#category_id").val('');
+                $("#stock").val('');
+                $("#price").val('');
                 $('h3').text('add product');
                 $('#add').text('add');
-                $('#add').click(function () {
-                    $.ajax({
-                        url: "/add",
-                        method: "POST",
-                        data: {
-                            nama_produk: $("#product_name").val(),
-                            category: $("#category_id").val(),
-                            stok: $("#stock").val(),
-                            harga: $("#price").val(),
-                        },
-                        success: function (response) {
-                            console.log(response);
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(error);
-                        }
-                    });
-                });
+                // $('#add').click(function (e) {
+                //     e.preventDefault();
+                //     $.ajax({
+                //         url: "/add",
+                //         method: "POST",
+                //         data: {
+                //             nama_produk: $("#product_name").val(),
+                //             category: $("#category_id").val(),
+                //             stok: $("#stock").val(),
+                //             harga: $("#price").val(),
+                //             imaage: $("#image").val(),
+                //         },
+                //         success: function (response) {
+                //             console.log(response);
+                //         },
+                //         error: function (xhr, status, error) {
+                //             console.log(error);
+                //         }
+                //     });
+                // });
             }
 
 
@@ -129,6 +153,9 @@
 
             //fungsi untuk edit produk
             function edit_openModal(item) {
+
+                $('#productForm').attr('action', '/edit/' + item.nama_produk);
+
                 $('h3').text('edit product');
                 $('#add').text('edit');
                 $("#productModal").removeClass("hidden");
@@ -137,26 +164,32 @@
                 $("#stock").val(item.stok);
                 $("#price").val(item.harga);
 
-                $('#add').click(function () {
-                    $.ajax({
-                        url: "/edit/" + item.nama_produk,
-                        method: "POST",
-                        data: {
-                            nama_produk: $("#product_name").val(),
-                            category: $("#category_id").val(),
-                            stok: $("#stock").val(),
-                            harga: $("#price").val(),
-                        },
-                        success: function (response) {
-                            console.log(response);
-                        },
-                        error: function (xhr) {
-                            console.error("❌ Gagal mengirim data ke server.");
-                            console.error("Status:", xhr.status);
-                            console.error("Response:", xhr.responseText);
-                        }
-                    });
-                })
+
+                // $('#add').click(function (e) {
+                //     e.preventDefault();
+                //     let formData = new FormData();
+                //     formData.append('nama_produk', $("#product_name").val());
+                //     formData.append('category', $("#category_id").val());
+                //     formData.append('stok', $("#stock").val());
+                //     formData.append('harga', $("#price").val());
+                //     formData.append('image', $('#image')[0].files[0]); // ambil file-nya
+                //     $.ajax({
+                //         url: "/edit/" + item.nama_produk,
+                //         method: "POST",
+                //         data: formData,
+                //         contentType: false, // harus false
+                //         processData: false, // harus false
+                //         success: function (response) {
+                //             console.log(response);
+                //             window.location.reload();
+                //         },
+                //         error: function (xhr) {
+                //             console.error("❌ Gagal mengirim data ke server.");
+                //             console.error("Status:", xhr.status);
+                //             console.error("Response:", xhr.responseText);
+                //         }
+                //     });
+                // })
             }
 
             $(document).ready(function () {
@@ -179,6 +212,10 @@
                         success: function (response) {
                             const { data, categoryName } = response;
 
+                            data.map((item, index) => {
+                                console.log(item);
+                            })
+
                             $("#product_list").html(
                                 data.map((item, index) => `
                                 <tr>
@@ -186,6 +223,7 @@
                                     <td class="px-4 py-2">${item.category.nama_category}</td>
                                     <td class="px-4 py-2">${item.stok}</td>
                                     <td class="px-4 py-2">${formatRupiah(item.harga)}</td>
+                                    <td class="px-4 py-2 w-[200px] h-[200px] object-cover rounded-lg"><img src="storage/images/${item.image}" alt="${item.nama_produk}"></td>
                                     <td class="px-4 py-2">
                                         <button onclick="edit_openModal({nama_produk: '${item.nama_produk}', category: '${item.category.id}', stok: '${item.stok}', harga: '${item.harga}'})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                                             Edit

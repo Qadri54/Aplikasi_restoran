@@ -11,7 +11,8 @@ class Product extends Model {
         'nama_produk',
         'stok',
         'harga',
-        'category_id'
+        'category_id',
+        'image'
     ];
 
     public function category():BelongsTo {

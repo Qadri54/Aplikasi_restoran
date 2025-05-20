@@ -41,23 +41,62 @@ class ProductController extends Controller {
         return redirect()->back();
     }
 
-    public function update(Request $request) {
-        $product = Product::where('nama_produk', $request->nama_produk)->first();
-        $product->nama_produk = $request->nama_produk;
-        $product->category_id = $request->category;
-        $product->stok = $request->stok;
-        $product->harga = $request->harga;
-        $product->save();
-        return redirect()->back();
+    public function update(Request $request,$nama_produk) {
+        $validated = $request->validate([
+        'nama_produk' => 'required|max:50',
+        'category' => 'required|numeric|exists:categories,id',
+        'stok' => 'required|min:1',
+        'harga' => 'required|numeric',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    $product = Product::where('nama_produk', $nama_produk)->firstOrFail();
+
+    // Jika ada file gambar baru
+    if ($request->hasFile('image')) {
+        $uploadedFile = $request->file('image');
+        $Raw_path = $uploadedFile->store('public/images');
+        $final_path = str_replace('public/', '', $Raw_path);
+        $path = str_replace('images/', '', $final_path);
+        $product->image = $path;
+    }
+
+    // Update data lainnya
+    $product->nama_produk = $validated['nama_produk'];
+    $product->category_id = $validated['category'];
+    $product->stok = $validated['stok'];
+    $product->harga = $validated['harga'];
+
+    $product->save();
+
+    return redirect()->back()->with('success', 'Produk berhasil diperbarui!');
     }
 
     public function create(Request $request) {
-        $product = new Product();
-        $product->nama_produk = $request->nama_produk;
-        $product->category_id = $request->category;
-        $product->stok = $request->stok;
-        $product->harga = $request->harga;
-        $product->save();
+        $validated = $request->validate([
+            'nama_produk' => 'required|max:50',
+            'category' => 'required|numeric|exists:categories,id',
+            'stok' => 'required|min:1',
+            'harga' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $uploadedFile = $request->file('image');
+        $rawpath = $uploadedFile->store('public/images');
+
+        $explode_file = explode('/', $rawpath);
+
+        $path = $explode_file[2];
+
+
+        Product::create([
+            'nama_produk' => $validated['nama_produk'],
+            'category_id' => $validated['category'],
+            'stok' => $validated['stok'],
+            'harga' => $validated['harga'],
+            'image' => $path,
+        ]);
+
         return redirect()->back();
     }
 }

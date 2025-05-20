@@ -1,13 +1,7 @@
 <x-layout>
     <!-- mengambil data nomor meja dan mengirim data ke component modal saat pertama kali mengakses /order/nomor meja -->
-    <x-modal>{{ $no_meja }}</x-modal>
-    
-    @php    
-    $total_bayar = 0;
-    $list_produkId_qty = [];
-    @endphp 
+    <x-modal></x-modal>
     <!-- list_produkId_qty berisi produk id dan qty dalam bentuk array yang akan digunakan untuk mengurangi stok -->
-    
 
     <nav
         class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
@@ -30,7 +24,9 @@
                     </svg>
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                <form action="#" method="GET" class="hidden md:block md:pl-2">
+
+                <!-- Fitur Search -->
+                <!-- <form action="#" method="GET" class="hidden md:block md:pl-2">
                     <label for="topbar-search" class="sr-only">Search</label>
                     <div class="relative md:w-64">
                         <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -41,11 +37,12 @@
                                 </path>
                             </svg>
                         </div>
-                        <input type="text" name="email" id="topbar-search"
+                        <input type="text" name="search" id="topbar-search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Search" autocomplete="off" />
                     </div>
-                </form>
+                </form> -->
+
             </div>
         </div>
     </nav>
@@ -56,7 +53,9 @@
         class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidenav" id="drawer-navigation">
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-            <form action="#" method="GET" class="md:hidden mb-2">
+
+            <!-- Fitur Search Mobile -->
+            <!-- <form action="#" method="GET" class="md:hidden mb-2">
                 <label for="sidebar-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -71,7 +70,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Search" />
                 </div>
-            </form>
+            </form> -->
             <ul class="space-y-2">
                 <li>
                     <a href="/checkout/{{ $no_meja }}"
@@ -94,7 +93,7 @@
                 <div
                     class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <img class="p-8 mx-auto rounded-t-lg object-cover rounded h-[300px]"
-                        src="{{ asset('img/' . $item['nama_produk'] . '.jpg') }}" alt="{{ $item['nama_produk'] }}" />
+                        src="{{ asset('storage/images/' . $item['image']) }}" alt="{{ $item['nama_produk'] }}" />
                     <div class="px-5 pb-5">
                         <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                             {{ $item["nama_produk"] }}
@@ -107,9 +106,22 @@
                             class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-1 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                             masuk ke keranjang</button>
                     </div>
-
                 </div>
             @endforeach
         </div>
+
+        @if (Cookie::has('keranjang'))
+            @php
+                $keranjang = json_decode(Cookie::get('keranjang'), true);
+            @endphp
+
+            <h3 class="text-white font-bold">Isi Keranjang:</h3>
+            <ul class="text-white">
+                @foreach ($keranjang as $item)
+                    <li>ID Produk: {{ $item['id_product'] }}, Jumlah: {{ $item['quantity'] }}</li>
+                @endforeach
+            </ul>
+        @endif
+
     </main>
 </x-layout>

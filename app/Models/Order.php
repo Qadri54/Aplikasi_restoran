@@ -10,7 +10,8 @@ class Order extends Model
 {
     protected $fillable = [
         'status',
-        'table_id'
+        'table_id',
+        'order_code'
     ];
 
     

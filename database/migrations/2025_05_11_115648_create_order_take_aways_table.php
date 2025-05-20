@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', callback: function (Blueprint $table) {
+        Schema::create('order_take_aways', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['pending', 'done'])->default('pending');
-            $table->foreignId('table_id')->constrained(
-                'tables','id','fk_table_order'
-            );
-            $table->string('order_code')->unique();
+            $table->string('customer_name');
+            $table->enum('status', ['pending','done'])->default('pending');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_take_aways');
     }
 };

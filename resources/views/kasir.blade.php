@@ -144,7 +144,7 @@
                         data.map(function (item) {
                             $('#card_container').append(`
                             <div class="bg-[#1f2937] rounded-lg shadow-md overflow-hidden text-white">
-                                <img src="https://via.placeholder.com/300x200"
+                                <img src="storage/images/${item.image}"
                                     class="w-full h-48 object-cover">
                                 <div class="p-4">
                                     <h2 class="text-lg font-bold mb-2">${item.nama_produk}</h2>

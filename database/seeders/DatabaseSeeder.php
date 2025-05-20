@@ -26,11 +26,11 @@ class DatabaseSeeder extends Seeder
         //     'table_id' => 1
         // ]); 
 
-        Product_order::create([
-            'id_product' => 1,
-            'id_order' => 1,
-            'quanity' => 5,
-        ]);
+        // Product_order::create([
+        //     'id_product' => 1,
+        //     'id_order' => 1,
+        //     'quanity' => 5,
+        // ]);
 
         // User::factory(10)->create();
 
@@ -41,21 +41,21 @@ class DatabaseSeeder extends Seeder
         //     'password'=>'admin123'
         // ]);
 
-        // Category::create([
-        //     'nama_category'=>'mie'
-        // ]);
+        Category::create([
+            'nama_category'=>'mie'
+        ]);
 
-        // Category::create([
-        //     'nama_category'=>'nasi'
-        // ]);
+        Category::create([
+            'nama_category'=>'nasi'
+        ]);
 
-        // Category::create([
-        //     'nama_category'=>'teh'
-        // ]);
+        Category::create([
+            'nama_category'=>'teh'
+        ]);
 
-        // Category::create([
-        //     'nama_category'=>'kopi'
-        // ]);
+        Category::create([
+            'nama_category'=>'kopi'
+        ]);
 
         // Product::create([
         //     'nama_produk' => 'mie bangladesh',

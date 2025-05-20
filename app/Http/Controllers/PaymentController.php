@@ -52,35 +52,18 @@ class PaymentController extends Controller {
         }
     }
 
-    /**
-     * Checks the transaction status of a payment request.
-     *
-     * This function evaluates the transaction status provided in the request.
-     * If the transaction status is "settlement", it indicates that the payment
-     * has been successfully completed.
-     *
-     * The function is intended to interact with the payment gateway to verify
-     * the current status of a transaction based on the order ID.
-     *
-     * @param Request $request The incoming HTTP request containing the 
-     * transaction details, including the 'status_transaction' field.
-     * @return mixed Returns the transaction status or an error view in case of
-     * processing failure.
-     */
-
     public function cekstatus(Request $request) {
         if ($request["status_transaction"] === "settlement") {
 
             //mengambil data yang sudah dikirim
             $table_id = $request->input('table_id');
-            $products_names = $request->input('product_names'); // array
+            $products_names = $request->input('product_name'); // array
             $number_of_orders = $request->input('number_of_orders'); // array
-            Order::where('table_id', $table_id)
-                ->update(['status' => 'processing']);
-
+            $order = Order::where('table_id', $table_id)
+                ->update(['status' => 'done']);
 
             foreach ($products_names as $index => $product_name) {
-                $product = Product::where('nama_produk', $product_name)->firstOrFail();
+                $product = Product::where('nama_produk', $product_name )->firstOrFail();
                 $product->stok -= $number_of_orders[$index];
                 $product->save();
             }
