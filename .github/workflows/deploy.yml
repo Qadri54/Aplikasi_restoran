@@ -21,4 +21,4 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           source: "."
-          target: "cd ../../var/www/Aplikasi_restoran"
+          target: "/var/www/Aplikasi_restoran"
