@@ -18,57 +18,7 @@ jobs:
         with:
           host: 202.74.74.3
           username: alifaqadri
-          key: |
-           -----BEGIN OPENSSH PRIVATE KEY-----
-            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
-            khLtgxQ0c/n2V4ugbgWasuE4w=
-            -----END OPENSSH PRIVATE KEY-----
+          key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           source: "."
           target: "/var/www/Aplikasi_restoran"
