@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('table_id')->constrained(
                 'tables','id','fk_table_order'
             );
-            $table->string('order_code')->unique();
+            // $table->string('order_code')->unique();
             $table->timestamps();
         });
     }

@@ -52,24 +52,44 @@ class OrderController extends Controller {
     }
 
     // membuat function keranjang untuk fitur keranjang
-    public function cart(Request $request){
+    public function cart(Request $request) {
         $validated = $request->validate([
             'id_product' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
+            'produk_name' => 'required'
         ]);
 
-        // 1.buat variabel yang menampung data cookie lama
+        // Ambil data cookie lama
         $cookie_lama = Cookie::get('keranjang');
 
-        // 2. masukkan data cookie lama ke dalam array (jika ada)
+        // Decode cookie lama jika ada, atau buat array kosong
         $keranjang = $cookie_lama ? json_decode($cookie_lama, true) : [];
 
-        // 3. masukkan data cookie baru kedalam array
-        $keranjang[] = $validated;
+        // Cek apakah produk sudah ada di keranjang
+        $found = false;
+        foreach ($keranjang as &$item) {
+            if ($item['id_product'] == $validated['id_product']) {
+                $item['quantity'] += $validated['quantity'];
+                $item['produk_name'] = $validated['produk_name'];
+                $found = true;
+                break;
+            }
+        }
+        unset($item); // penting setelah loop by reference
 
-        Cookie::queue('keranjang', json_encode($keranjang), 120);
+        // Jika belum ada, tambahkan produk baru ke keranjang
+        if (!$found) {
+            $keranjang[] = [
+                'id_product' => $validated['id_product'],
+                'quantity' => $validated['quantity'],
+                'produk_name' => $validated['produk_name']
+            ];
+        }
 
-        return redirect()->back();
+        // Simpan kembali ke cookie
+        Cookie::queue('keranjang', json_encode($keranjang), 60 * 24); // berlaku selama 1 hari
+
+        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang!');
     }
 
     public function set_meja(Request $request) {
@@ -129,7 +149,7 @@ class OrderController extends Controller {
         $final_amount = $rupiahFormaterr->formatCurrency($final_amount, 'IDR');
         // dd($products, $qty, $total_qty , $final_amount, $nomor_meja);
 
-        $pdf = Pdf::loadView('laporan', compact('products','qty', 'total_qty','final_amount', 'nomor_meja'));
+        $pdf = Pdf::loadView('laporan', compact('products', 'qty', 'total_qty', 'final_amount', 'nomor_meja'));
 
         return $pdf->download("struk meja $nomor_meja.pdf");
     }

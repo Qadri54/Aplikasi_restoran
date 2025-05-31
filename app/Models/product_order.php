@@ -9,6 +9,5 @@ class Product_order extends Model
     protected $fillable = [
         'id_product',
         'id_order',
-        'order_code',
     ];
 }

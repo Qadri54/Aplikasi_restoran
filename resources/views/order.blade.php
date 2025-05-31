@@ -1,6 +1,6 @@
 <x-layout>
     <!-- mengambil data nomor meja dan mengirim data ke component modal saat pertama kali mengakses /order/nomor meja -->
-    <x-modal></x-modal>
+    <x-modal>{{ $no_meja }}</x-modal>
     <!-- list_produkId_qty berisi produk id dan qty dalam bentuk array yang akan digunakan untuk mengurangi stok -->
 
     <nav
@@ -110,18 +110,36 @@
             @endforeach
         </div>
 
-        @if (Cookie::has('keranjang'))
-            @php
-                $keranjang = json_decode(Cookie::get('keranjang'), true);
-            @endphp
+        <!-- Sidebar Keranjang di Sebelah Kanan -->
+        <!-- <aside
+            class="fixed top-0 right-0 z-40 w-64 h-screen pt-14 bg-white border-l border-gray-200 dark:bg-gray-800 dark:border-gray-700 overflow-y-auto"
+            aria-label="Keranjang Sidebar">
+            <div class="py-5 px-3">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Keranjang Anda</h2>
+                @if (Cookie::has('keranjang'))
+                    @php
+                        $keranjang = json_decode(Cookie::get('keranjang'), true);
+                    @endphp
+                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                        @foreach ($keranjang as $item)
+                            <li class="border-b border-gray-300 dark:border-gray-600 pb-2">
+                                <p><span class="font-medium">Menu:</span> {{ $item['produk_name'] }}</p>
+                                <p><span class="font-medium">Jumlah:</span> {{ $item['quantity'] }}</p>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Keranjang masih kosong.</p>
+                @endif
+                <a href="/checkout/{{ $no_meja }}"
+                    class="mt-4 inline-block w-full text-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                    Checkout
+                </a>
+            </div>
+        </aside> -->
 
-            <h3 class="text-white font-bold">Isi Keranjang:</h3>
-            <ul class="text-white">
-                @foreach ($keranjang as $item)
-                    <li>ID Produk: {{ $item['id_product'] }}, Jumlah: {{ $item['quantity'] }}</li>
-                @endforeach
-            </ul>
-        @endif
+
+        
 
     </main>
 </x-layout>

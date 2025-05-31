@@ -29,6 +29,7 @@ use App\Http\Controllers\PaymentController;
     Route::post('/delete_order', [OrderController::class, 'cancelOrder'])->name('delete_order');
     Route::post('/cetak_struk', [OrderController::class, 'cetak'])->name('cetak_struk');
     Route::post('/set_meja', [OrderController::class, 'set_meja'])->name("set_meja");
+    Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
     
     // kasir Route
     Route::get('/kasir', function () {

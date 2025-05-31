@@ -16,11 +16,15 @@ return new class extends Migration {
                 ->constrained('products')
                 ->onDelete('cascade');
 
-            $table->string('order_code');
-            $table->foreign('order_code')
-                ->references('order_code')
-                ->on('orders')
+            $table->foreignId('id_order')
+                ->constrained('orders')
                 ->onDelete('cascade');
+
+            // $table->string('order_code');
+            // $table->foreign('order_code')
+            //     ->references('order_code')
+            //     ->on('orders')
+                // ->onDelete('cascade');
             $table->integer('quanity');
             $table->timestamps();
         });

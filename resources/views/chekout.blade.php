@@ -124,7 +124,7 @@
 
         <!-- melakukan pembayaran -->
         <!-- Form pembayaran dipindah ke view cart -->
-        <!-- @if (isset($order) && $status_order === "pending")
+        @if (isset($order) && $status_order === "pending")
             <form action="{{ route('payment') }}" method="post" class="w-full flex justify-center mt-10">
                 @csrf
                 <input type="hidden" value="{{  $transaction_id }}" name="order_midtrans_id">
@@ -144,7 +144,7 @@
             </form>
         @elseif(!isset($order))
             <h1 class="text-center text-5xl text-white font-bold">Kamu Belum Memesan</h1>
-        @endif -->
+        @endif
 
 
         @if (!empty($_GET["transaction_status"]))
