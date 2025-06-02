@@ -9,7 +9,7 @@ use App\Models\Table;
 use NumberFormatter;
 
 class ProductController extends Controller {
-    public function get_all(User $user, $table) {
+    public function get_all(User $user, $table = null) {
         $items = Product::with('category')->get();
         $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
         $getpriceList = [];
