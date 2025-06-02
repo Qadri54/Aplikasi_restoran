@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Table;
 use NumberFormatter;
 
 class ProductController extends Controller {
-    public function get_all(Table $table = null) {
+    public function get_all(User $user, $table) {
         $items = Product::with('category')->get();
         $rupiahFormaterr = new NumberFormatter('id_ID', NumberFormatter::CURRENCY);
         $getpriceList = [];
@@ -23,11 +24,12 @@ class ProductController extends Controller {
             return view('order', [
                 'data' => $items,
                 'price' => $getpriceList,
-                'no_meja' => $table->no_meja
+                'no_meja' => $table,
+                'user' => $user
             ]);
         }
 
-        if (request()->is('admin')) {
+        if (request()->is('admin_dashboard')) {
             return view('product-list');
         }
 

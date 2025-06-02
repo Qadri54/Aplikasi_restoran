@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('table_id')->constrained(
                 'tables','id','fk_table_order'
             );
+            $table->foreignId('user_id')->constrained(
+                'users','id','fk_user_order'
+            );
             // $table->string('order_code')->unique();
             $table->timestamps();
         });

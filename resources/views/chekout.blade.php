@@ -40,7 +40,7 @@
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
             <ul class="space-y-2 -mt-5">
                 <li>
-                    <a href="/meja/{{ $no_meja }}"
+                    <a href="/katalog/{{ Auth::user()->id }}/{{ $no_meja }}"
                         class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                         <img class="h-[25px] w-[25px]" src="{{ asset('img/home.png') }}" alt="home">
                         <span class="ml-3">back to home</span>
@@ -87,22 +87,23 @@
                         <div class="flex items-center justify-between mt-5 -ml-1">
                             <form action="{{ route('delete_order') }}" method="POST" id="orderProducts_or_cetakstruk">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $order['id'] }}">
-                                <input type="hidden" name="status" value="{{ $order['status'] }}">
-                                <!-- mengecek status order jika tidak pending maka button menjadi disabled -->
-                                @if ($order['status'] != 'pending')
-                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
-                                        data-modal-toggle="crud-modal" disabled
-                                        class="button_order w-auto text-white bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-500 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
-                                        order</button>
+                                <input type="hidden" name="order_id" value="{{ $order['id'] }}">
+
+                                @if ($order['status'] !== 'pending')
+                                    <button type="submit" id="button_order" disabled
+                                        class="button_order w-auto text-white bg-gray-400 cursor-not-allowed rounded-lg text-sm px-5 py-2.5 me-2 mb-2 font-semibold">
+                                        Cancel Order
+                                    </button>
                                 @else
-                                    <button type="submit" id="button_order" data-modal-target="crud-modal"
-                                        data-modal-toggle="crud-modal"
-                                        class="button_order w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 font-semibold">cancel
-                                        order</button>
+                                    <button type="submit" id="button_order"
+                                        onclick="return confirm('Yakin ingin membatalkan pesanan ini?')"
+                                        class="button_order w-auto text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 font-semibold">
+                                        Cancel Order
+                                    </button>
                                 @endif
                             </form>
                         </div>
+
                     </div>
                 </div>
             @endforeach
@@ -130,6 +131,7 @@
                 <input type="hidden" value="{{  $transaction_id }}" name="order_midtrans_id">
                 <input type="hidden" value="{{ $order['nomor_meja'] }}" name="id">
                 <input type="hidden" value="{{ $total_amount }}" name="amount">
+                <input type="hidden" value="{{ $user_id }}" name="user_id">
                 <input type="hidden" name="product_name" value="{{ implode(',', $product_names) }}">
                 <input type="hidden" name="number_of_orders" value="{{ implode(',', $number_of_orders) }}">
                 <button type="submit"

@@ -8,15 +8,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Table;
 
 class AuthController extends Controller {
+    //mengarah
     public function showRegister() {
         return view('auth.register');
     }
     public function showLogin() {
-        if (Auth::check()) {
-            return redirect()->intended('admin');
-        }
+        // if (Auth::check()) {
+        //     return redirect()->intended('admin_dashboard');
+        // }
+
         return view('auth.login');
     }
 
@@ -40,9 +43,13 @@ class AuthController extends Controller {
         ]
         );
 
-        Auth::login($user);
 
-        return redirect()->route('admin')->with('sucsess', $validateNewUser['username']);
+        if ($user->isadmin == 1) {
+            Auth::login($user);
+            return redirect()->route('admin')->with('sucsess', $validateNewUser['username']);
+        }
+
+        return redirect()->intended('/');
     }
 
     public function login(Request $request) {
@@ -62,12 +69,21 @@ class AuthController extends Controller {
         if (Auth::attempt($validate_credential, $remember)) { //mengecek ke database apakah sesuai dengan input form
             $request->session()->regenerate();
 
-            return redirect()->route('admin'); //jika sesuai arahkan ke halaman admin
+            if (Auth::user()->isadmin == 1) {
+                return redirect()->route('admin'); //jika sesuai arahkan ke halaman admin
+            }
+
+            if (Table::where('no_meja', $request->no_meja)->exists()) {
+                return redirect()->route('katalog.user', ['user' => Auth::user()->id, 'table' => $request->no_meja]);
+            }
+
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([  //jika tidak sesuai kembali ke halaman sebelumnya
-            'email' => 'Your password or email does not match',
-            'password' => 'Your password or email does not match',
+            'email' => 'Your password, no_meja or email does not match',
+            'password' => 'Your password, no_meja or email does not match',
+            'no_meja' => 'Your password, no_meja or email does not match',
         ])->onlyInput('email');
     }
 

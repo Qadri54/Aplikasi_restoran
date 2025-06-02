@@ -15,6 +15,7 @@ class PaymentController extends Controller {
         $order_id = "ORDER-" . $request["order_midtrans_id"];
         $amount = $request["amount"];
         $id_meja = $request["id"];
+        $user_id = $request["user_id"];
 
         try {
             $response = Http::withHeaders([
@@ -27,7 +28,7 @@ class PaymentController extends Controller {
                             "gross_amount" => (int) $amount
                         ],
                         'callbacks' => [
-                            'finish' => url("checkout/$id_meja"),
+                            'finish' => url("checkout/$id_meja/$user_id"),
                         ],
                     ]);
 

@@ -1,6 +1,6 @@
 <x-layout>
     <!-- mengambil data nomor meja dan mengirim data ke component modal saat pertama kali mengakses /order/nomor meja -->
-    <x-modal>{{ $no_meja }}</x-modal>
+    <x-modal :noMeja="$no_meja" />
     <!-- list_produkId_qty berisi produk id dan qty dalam bentuk array yang akan digunakan untuk mengurangi stok -->
 
     <nav
@@ -73,7 +73,7 @@
             </form> -->
             <ul class="space-y-2">
                 <li>
-                    <a href="/checkout/{{ $no_meja }}"
+                    <a href="{{ route('checkout',['table' => $no_meja, 'user' => Auth::user()->id]) }}"
                         class="flex items-center p-2 ml-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                         <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor" viewBox="0 0 18 21">
@@ -82,6 +82,20 @@
                         </svg>
                         <span class="ml-1">keranjang anda</span>
                     </a>
+
+                    <form action="{{ route('auth.logout') }}" method="get"
+                        class="flex items-center p-2 ml-2.5 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-600 group">
+                        @csrf
+                        <button type="submit">
+                            <svg class="inline mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3" />
+                            </svg>
+                            <span class="cursor-pointer text-sm font-medium text-gray-900 dark:text-white">Logout</span>
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -139,7 +153,7 @@
         </aside> -->
 
 
-        
+
 
     </main>
 </x-layout>
