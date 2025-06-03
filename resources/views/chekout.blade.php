@@ -88,6 +88,7 @@
                             <form action="{{ route('delete_order') }}" method="POST" id="orderProducts_or_cetakstruk">
                                 @csrf
                                 <input type="hidden" name="order_id" value="{{ $order['id'] }}">
+                                <input type="hidden" name="order_status" value="{{ $order['status'] }}">
 
                                 @if ($order['status'] !== 'pending')
                                     <button type="submit" id="button_order" disabled
@@ -96,7 +97,6 @@
                                     </button>
                                 @else
                                     <button type="submit" id="button_order"
-                                        onclick="return confirm('Yakin ingin membatalkan pesanan ini?')"
                                         class="button_order w-auto text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 rounded-lg text-sm px-5 py-2.5 me-2 mb-2 font-semibold">
                                         Cancel Order
                                     </button>

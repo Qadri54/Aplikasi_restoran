@@ -131,8 +131,8 @@ class OrderController extends Controller {
     }
 
     public function cancelOrder(Request $request) {
-        if ($request['status'] === 'pending') {
-            Order::destroy($request['id']);
+        if ($request['order_status'] === 'pending') {
+            Order::destroy($request['order_id']);
             return redirect()->back();
         }
         return redirect()->back();
