@@ -46,7 +46,3 @@ A modern, contactless restaurant ordering system that allows customers to **scan
 - **Payment Gateway:** Midtrans Snap API  
 - **Deployment:**  VPS 
 
----
-
-## 📦 Folder Structure (Simplified)
-
