@@ -46,3 +46,8 @@ A modern, contactless restaurant ordering system that allows customers to **scan
 - **Payment Gateway:** Midtrans Snap API  
 - **Deployment:**  VPS 
 
+## Link Website
+- https://qadristore.my.id/
+- email: budi@gmail.com
+- password: 12345678
+- nomor meja: 5
